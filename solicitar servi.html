@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solicitar Serviço - Phantom Signer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0b000f;
+            --dark: #4d0060;
+            --primary: #7f00af;
+            --accent: #b000f3;
+            --text: #ffffff;
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+            position: relative;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* FUNDO ANIMADO COM FORMAS ABSTRATAS */
+        .background-shapes {
+            position: fixed;
+            inset: 0;
+            z-index: -10;
+            pointer-events: none;
+            overflow: hidden;
+            background: radial-gradient(circle at 50% 50%, #14001c 0%, var(--bg) 100%);
+        }
+
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(140px);
+            mix-blend-mode: screen;
+            animation: pulseBlobs 15s ease-in-out infinite alternate;
+            will-change: transform;
+        }
+
+        .blob1 { 
+            width: 600px; 
+            height: 600px; 
+            background: linear-gradient(45deg, var(--primary), var(--accent)); 
+            top: -150px; 
+            left: -100px; 
+            opacity: 0.25; 
+        }
+        
+        .blob2 { 
+            width: 700px; 
+            height: 700px; 
+            background: linear-gradient(135deg, #00f3ff, var(--accent)); 
+            right: -200px; 
+            top: 20%; 
+            opacity: 0.15; 
+            animation-delay: -5s; 
+        }
+
+        .shape {
+            position: absolute;
+            background: linear-gradient(135deg, rgba(176, 0, 243, 0.2), rgba(0, 243, 255, 0.05));
+            border: 1px solid rgba(176, 0, 243, 0.3);
+            backdrop-filter: blur(3px);
+            -webkit-backdrop-filter: blur(3px);
+            animation: floatAbstract 12s ease-in-out infinite;
+            will-change: transform;
+        }
+
+        .s1 { width: 140px; height: 140px; top: 15%; left: 7%; clip-path: polygon(50% 0%, 0% 100%, 100% 70%); }
+        .s2 { width: 90px; height: 120px; top: 65%; right: 8%; clip-path: polygon(25% 0%, 100% 35%, 75% 100%, 0% 60%); animation-delay: -3s; }
+
+        @keyframes pulseBlobs {
+            0% { transform: scale(1) translate(0px, 0px) rotate(0deg); }
+            100% { transform: scale(1.1) translate(30px, -30px) rotate(180deg); }
+        }
+
+        @keyframes floatAbstract {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(10deg); border-color: rgba(0, 243, 255, 0.4); }
+        }
+
+        /* HEADER */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 8%;
+            background: rgba(11, 0, 15, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(176, 0, 243, 0.1);
+        }
+
+        .logo {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .back-link {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: var(--transition);
+        }
+
+        .back-link:hover {
+            color: var(--accent);
+        }
+
+        /* CONTAINER DO FORMULÁRIO */
+        main {
+            flex: 1;
+            padding: 60px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .form-card {
+            width: 100%;
+            max-width: 680px;
+            background: linear-gradient(145deg, rgba(127, 0, 175, 0.12), rgba(77, 0, 96, 0.18));
+            border: 1px solid rgba(176, 0, 243, 0.25);
+            border-radius: 20px;
+            padding: 40px;
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .form-header h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            background: linear-gradient(to right, #fff, #dcc0ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .form-header p {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.95rem;
+        }
+
+        /* CAMPOS DO FORMULÁRIO */
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .required {
+            color: #ff3366;
+            font-size: 0.8rem;
+            font-weight: 400;
+            margin-left: 5px;
+        }
+
+        .optional {
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.8rem;
+            font-weight: 400;
+            margin-left: 5px;
+        }
+
+        /* TEXTAREA */
+        .form-group textarea {
+            width: 100%;
+            background: rgba(11, 0, 15, 0.7);
+            border: 1px solid rgba(176, 0, 243, 0.3);
+            border-radius: 10px;
+            padding: 18px;
+            color: #fff;
+            font-family: inherit;
+            font-size: 0.95rem;
+            resize: vertical;
+            transition: var(--transition);
+            line-height: 1.5;
+        }
+
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 15px rgba(176, 0, 243, 0.3);
+        }
+
+        /* UPLOAD DE ARQUIVOS */
+        .form-group input[type="file"] {
+            display: none;
+        }
+
+        .file-upload-zone {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 30px 20px;
+            background: rgba(127, 0, 175, 0.08);
+            border: 2px dashed rgba(176, 0, 243, 0.3);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .file-upload-zone:hover {
+            background: rgba(127, 0, 175, 0.15);
+            border-color: var(--accent);
+        }
+
+        .file-upload-zone .icon {
+            font-size: 1.8rem;
+            color: var(--accent);
+            margin-bottom: 8px;
+        }
+
+        .file-upload-zone span {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 500;
+        }
+
+        .file-help {
+            display: block;
+            margin-top: 8px;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        /* BOTÃO DE ENVIAR */
+        .btn-submit {
+            width: 100%;
+            padding: 16px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(176, 0, 243, 0.3);
+            margin-top: 15px;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(176, 0, 243, 0.5);
+            background: #be19ff;
+        }
+
+        /* FOOTER */
+        footer {
+            text-align: center;
+            padding: 25px;
+            background: #050007;
+            border-top: 1px solid rgba(176, 0, 243, 0.1);
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        @media (max-width: 600px) {
+            .form-card { padding: 30px 20px; }
+            .form-header h1 { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="background-shapes">
+        <div class="blob blob1"></div>
+        <div class="blob blob2"></div>
+        <div class="shape s1"></div>
+        <div class="shape s2"></div>
+    </div>
+
+    <header>
+        <a href="index.html" class="logo">Phantom Signer</a>
+        <a href="index.html" class="back-link">← Voltar para o início</a>
+    </header>
+
+    <main>
+        <div class="form-card">
+            <div class="form-header">
+                <h1>Fazer meu Pedido</h1>
+                <p>Insira os detalhes do seu briefing abaixo para iniciarmos o projeto.</p>
+            </div>
+
+            <form action="#" method="POST" enctype="multipart/form-data">
+                
+                <div class="form-group">
+                    <label for="descricao">
+                        Descreva o seu projeto / pedido 
+                        <span class="required">*obrigatório</span>
+                    </label>
+                    <textarea 
+                        id="descricao" 
+                        name="descricao" 
+                        rows="7" 
+                        placeholder="Ex: Quero uma thumbnail de FNAF estilo 3D com o Freddy no centro. Use cores roxas e coloque o título bem chamativo..." 
+                        required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        Envie seus materiais ou referências 
+                        <span class="optional">(opcional)</span>
+                    </label>
+                    <label for="arquivos" class="file-upload-zone">
+                        <div class="icon">📁</div>
+                        <span id="file-label-text">Clique para selecionar os arquivos</span>
+                        <input type="file" id="arquivos" name="arquivos[]" multiple>
+                    </label>
+                    <small class="file-help">Envie logos, referências visuais, skins, etc. (Aceita múltiplos arquivos)</small>
+                </div>
+
+                <button type="submit" class="btn-submit">Enviar Pedido para Produção</button>
+
+            </form>
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2026 Phantom Signer - Todos os direitos reservados.</p>
+    </footer>
+
+    <script>
+        // Pequena melhoria interativa para mostrar quantos arquivos foram carregados
+        const fileInput = document.getElementById('arquivos');
+        const fileLabel = document.getElementById('file-label-text');
+
+        fileInput.addEventListener('change', function() {
+            const filesLength = this.files.length;
+            if (filesLength === 1) {
+                fileLabel.textContent = "1 arquivo selecionado";
+            } else if (filesLength > 1) {
+                fileLabel.textContent = `${filesLength} arquivos selecionados`;
+            } else {
+                fileLabel.textContent = "Clique para selecionar os arquivos";
+            }
+        });
+    </script>
+
+</body>
+</html>

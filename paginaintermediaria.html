@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escolha como prosseguir - Phantom Signer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0b000f;
+            --dark: #4d0060;
+            --primary: #7f00af;
+            --accent: #b000f3;
+            --text: #ffffff;
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+            position: relative;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .background-shapes {
+            position: fixed;
+            inset: 0;
+            z-index: -10;
+            pointer-events: none;
+            overflow: hidden;
+            background: radial-gradient(circle at 50% 50%, #14001c 0%, var(--bg) 100%);
+        }
+
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(140px);
+            mix-blend-mode: screen;
+            animation: pulseBlobs 15s ease-in-out infinite alternate;
+            will-change: transform;
+        }
+
+        .blob1 {
+            width: 600px;
+            height: 600px;
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            top: -150px;
+            left: -100px;
+            opacity: 0.25;
+        }
+
+        .blob2 {
+            width: 700px;
+            height: 700px;
+            background: linear-gradient(135deg, #00f3ff, var(--accent));
+            right: -200px;
+            top: 20%;
+            opacity: 0.15;
+            animation-delay: -5s;
+        }
+
+        @keyframes pulseBlobs {
+            0% {
+                transform: scale(1) translate(0px, 0px) rotate(0deg);
+            }
+            100% {
+                transform: scale(1.1) translate(30px, -30px) rotate(180deg);
+            }
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 8%;
+            background: rgba(11, 0, 15, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(176, 0, 243, 0.1);
+        }
+
+        .logo {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .back-link {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: var(--transition);
+        }
+
+        .back-link:hover {
+            color: var(--accent);
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .title-area {
+            margin-bottom: 50px;
+            max-width: 600px;
+        }
+
+        .title-area h1 {
+            font-size: 2.4rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            background: linear-gradient(to right, #fff, #dcc0ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .title-area p {
+            color: rgba(255, 255, 255, 0.65);
+            font-size: 1.05rem;
+        }
+
+        .options-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: stretch;
+            gap: 25px;
+            width: 100%;
+            max-width: 950px;
+        }
+
+        .option-card {
+            background: linear-gradient(145deg, rgba(127, 0, 175, 0.1), rgba(77, 0, 96, 0.15));
+            border: 1px solid rgba(176, 0, 243, 0.2);
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-decoration: none;
+            color: var(--text);
+            transition: var(--transition);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+            min-width: 260px;
+            max-width: 310px;
+        }
+
+        .option-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+            box-shadow: 0 12px 30px rgba(176, 0, 243, 0.25);
+            background: linear-gradient(145deg, rgba(127, 0, 175, 0.15), rgba(77, 0, 96, 0.2));
+        }
+
+        .option-card.featured {
+            border-color: #00f3ff;
+            box-shadow: 0 0 25px rgba(0, 243, 255, 0.15);
+            transform: scale(1.04);
+            position: relative;
+            background: linear-gradient(145deg, rgba(0, 243, 255, 0.08), rgba(127, 0, 175, 0.15));
+        }
+
+        .option-card.featured:hover {
+            transform: scale(1.06) translateY(-5px);
+            box-shadow: 0 12px 30px rgba(0, 243, 255, 0.3);
+            background: linear-gradient(145deg, rgba(0, 243, 255, 0.12), rgba(127, 0, 175, 0.2));
+        }
+
+        .badge {
+            position: absolute;
+            top: -12px;
+            background: #00f3ff;
+            color: #0b000f;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 4px 14px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 10px rgba(0, 243, 255, 0.4);
+        }
+
+        .option-card.email:hover {
+            border-color: #ffaa00;
+            box-shadow: 0 12px 30px rgba(255, 170, 0, 0.2);
+        }
+
+        .option-card.behance:hover {
+            border-color: #0057ff;
+            box-shadow: 0 12px 30px rgba(0, 87, 255, 0.2);
+        }
+
+        .option-icon {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            line-height: 1;
+        }
+
+        .option-card h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .option-card p {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            background: #050007;
+            border-top: 1px solid rgba(176, 0, 243, 0.1);
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .options-grid {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .option-card {
+                width: 100%;
+                max-width: 400px;
+            }
+
+            .option-card.featured {
+                transform: scale(1);
+                margin-top: 15px;
+            }
+
+            .option-card.featured:hover {
+                transform: translateY(-5px);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="background-shapes">
+        <div class="blob blob1"></div>
+        <div class="blob blob2"></div>
+    </div>
+
+    <header>
+        <a href="index.html" class="logo">Phantom Signer</a>
+        <a href="index.html" class="back-link">← Voltar para o início</a>
+    </header>
+
+    <main>
+        <div class="title-area">
+            <h1>Como prefere conversar?</h1>
+            <p>Escolha o canal de atendimento que for mais prático para você iniciar o seu projeto.</p>
+        </div>
+
+        <div class="options-grid">
+            <a href="mailto:murilotmjbrcontato@gmail.com?subject=Orçamento - Phantom Signer" class="option-card email">
+                <div class="option-icon">✉️</div>
+                <h3>E-mail Direto</h3>
+                <p>Envie sua proposta ou dúvidas diretamente para:</p>
+                <strong style="color: #ffaa00; font-size: 0.85rem; margin-top: 5px; word-break: break-all;">
+                    murilotmjbrcontato@gmail.com
+                </strong>
+            </a>
+
+            <a href="solicitar servi.html" class="option-card featured">
+                <span class="badge">Mais Rápido</span>
+                <div class="option-icon">📝</div>
+                <h3>Formulário Detalhado</h3>
+                <p>Envie as especificações e materiais diretamente pelo site para produção imediata.</p>
+            </a>
+
+            <a href="https://behance.net/murilotguedes" target="_blank" rel="noopener" class="option-card behance">
+                <div class="option-icon">🎨</div>
+                <h3>Behance</h3>
+                <p>Acompanhe nossos projetos e entre em contato pela rede oficial do portfólio.</p>
+            </a>
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2026 Phantom Signer - Todos os direitos reservados.</p>
+    </footer>
+
+</body>
+</html>
